@@ -10,6 +10,6 @@ pub fn register(config: &mut ServiceConfig) {
             .route(post().to(UserController::post_user))
         )
         .service(
-            resource("/users/{id}").route(get().to(UserController::get_id))
+            resource("/users/{id}").route(get().to(UserController::get_user_by_id))
         );
 }

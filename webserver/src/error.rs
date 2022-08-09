@@ -55,6 +55,7 @@ impl ResponseError for ApiError {
             ApiError::ValidationError { .. } => StatusCode::BAD_REQUEST,
             ApiError::BadClientData => StatusCode::BAD_REQUEST,
             ApiError::NotFound => StatusCode::NOT_FOUND,
+            _ => StatusCode::INTERNAL_SERVER_ERROR
         }
     }
 }
