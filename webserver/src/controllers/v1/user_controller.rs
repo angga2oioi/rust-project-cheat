@@ -1,4 +1,5 @@
 use actix_web::{ HttpResponse, HttpRequest };
+use actix_web_httpauth::extractors::bearer::{BearerAuth, Config};
 use actix_web::web;
 use crate::controllers::api_view::{ view };
 use crate::model::user_model::{ User, UserQueryParams };
@@ -34,14 +35,16 @@ impl UserController {
         view(response.to_string())
     }
 
-    pub async fn post_user(req: String) -> Result<HttpResponse, ApiError> {
-        let user: User = serde_json::from_str(&req)?;
+    pub async fn post_user(req: HttpRequest,body : String,auth: BearerAuth) -> Result<HttpResponse, ApiError> {
+        
+        let user: User = serde_json::from_str(&body)?;
 
         let response =
             json!({
             "error": 0,
             "message": "About get",
-            "user":user
+            "user":user,
+            "token":auth.token()
         });
 
         view(response.to_string())
