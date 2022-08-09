@@ -5,8 +5,7 @@ use serde::Serialize;
 // Struct which defines the structure of the error response
 #[derive(Serialize)]
 struct FormattedErrorResponse {
-    status_code: u16,
-    error: String,
+    error: u16,
     message: String,
 }
 
@@ -42,8 +41,9 @@ impl ResponseError for ApiError {
     // Function to generate the error response
     fn error_response(&self) -> HttpResponse {
         let error_response = FormattedErrorResponse {
-            status_code: self.status_code().as_u16(),
-            error: self.to_string(),
+            //status_code: self.status_code().as_u16(),
+            //error: self.to_string(),
+            error: self.status_code().as_u16(),
             message: self.name(),
         };
         HttpResponse::build(self.status_code()).json(error_response)
