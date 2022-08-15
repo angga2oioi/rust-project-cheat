@@ -46,7 +46,8 @@ impl UserController {
             "user":user,
             "token":auth.token()
         });
-
+        println!("{:?}",response);
+        
         view(response.to_string())
     }
 }
