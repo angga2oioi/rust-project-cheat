@@ -24,9 +24,11 @@ fn main() {
         .to_string(),
     );
 
-    let banana = caches.get(&"BANANA" as &str).unwrap().to_owned();
-
     caches.remove(&"APPLE" as &str);
+    caches.remove(&"BANANA" as &str);
+    
+    let banana = caches.get(&"BANANA" as &str);
+
 
     let apple = caches.get(&"APPLE" as &str);
 
@@ -35,10 +37,15 @@ fn main() {
         _ => JsonValue::Null,
     };
 
+    let banana_result : JsonValue= match banana {
+        Some(val)=>JsonValue::String(val.to_string()),
+        _ => JsonValue::Null
+    };
+
     let apple_json = object! {
         id:"APPLE",
-        result:apple_result,
-        banana:json::parse(&banana).unwrap()
+        apple:apple_result,
+        banana:json::parse(&banana_result.to_string()).unwrap()
     };
 
 
