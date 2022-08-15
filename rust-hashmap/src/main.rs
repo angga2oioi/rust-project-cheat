@@ -1,4 +1,4 @@
-use json::{object, JsonValue, JsonValue::Null};
+use json::{object, JsonValue};
 use std::collections::HashMap;
 
 fn main() {
@@ -32,10 +32,10 @@ fn main() {
 
     let apple_result: JsonValue = match apple {
         Some(val) => JsonValue::String(val.to_string()),
-        _ => Null,
+        _ => JsonValue::Null,
     };
 
-    let mut apple_json = object! {
+    let apple_json = object! {
         id:"APPLE",
         result:apple_result,
         banana:json::parse(&banana).unwrap()
