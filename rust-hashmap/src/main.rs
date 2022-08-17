@@ -1,15 +1,39 @@
+#[macro_use]
+extern crate lazy_static;
+
 use json::{object, JsonValue};
 use std::collections::HashMap;
 
+use std::sync::{
+    Mutex,
+};
+
+use std::mem::{
+    drop as unlock_mutex
+};
+
+
+use crate::service::print_banana;
+
+mod service;
+
+lazy_static! {
+    static ref HASHMAP: Mutex<HashMap<&'static str, &'static str>> = {
+        let m = HashMap::new();
+        Mutex::new(m)
+    };    
+}
+
+
 fn main() {
-    let mut caches = HashMap::new();
+    let mut caches = HASHMAP.lock().unwrap();
 
-    caches.insert("BANANA".to_string(), "12".to_string());
+    caches.insert("BANANA", "12");
 
-    caches.insert("APPLE".to_string(), "13".to_string());
+    caches.insert("APPLE", "13");
 
     caches.insert(
-        "BANANA".to_string(),
+        "BANANA",
         r#"{
     "code": 200,
     "success": true,
@@ -21,16 +45,15 @@ fn main() {
         ]
     }
 }"#
-        .to_string(),
+        ,
     );
 
-    caches.remove(&"APPLE" as &str);
-    caches.remove(&"BANANA" as &str);
+    caches.remove("APPLE");
     
-    let banana = caches.get(&"BANANA" as &str);
+    let banana = caches.get("BANANA");
 
 
-    let apple = caches.get(&"APPLE" as &str);
+    let apple = caches.get("APPLE");
 
     let apple_result: JsonValue = match apple {
         Some(val) => JsonValue::String(val.to_string()),
@@ -50,4 +73,10 @@ fn main() {
 
 
     println!("{:?}", json::stringify(apple_json));
+    
+    unlock_mutex(caches);
+
+    print_banana();
+
+    
 }
