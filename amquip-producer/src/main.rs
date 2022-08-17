@@ -2,7 +2,7 @@ use amiquip::{Connection, Exchange, Publish, Result};
 
 fn main() -> Result<()> {
     // Open connection.
-    let mut connection = Connection::insecure_open("amqp://guest:guest@localhost:5672")?;
+    let mut connection = Connection::insecure_open("amqp://localhost:5672")?;
 
     // Open a channel - None says let the library choose the channel ID.
     let channel = connection.open_channel(None)?;
