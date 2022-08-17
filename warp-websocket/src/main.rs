@@ -37,11 +37,11 @@ async fn ws_handler(websocket: warp::ws::WebSocket){
         let response = object!{
             "jsonrpc": "2.0",
             "result": 43,
-            "id":json_msg["id"].as_str()
+            "id":json_msg["id"].to_string()
         };
 
         println!("msg: {:?}", msg);
-        println!("response: {}", json_msg.to_string());
+        println!("response: {}", response.to_string());
 
         let _ = tx.send(warp::ws::Message::text(response.to_string())).await;
 
